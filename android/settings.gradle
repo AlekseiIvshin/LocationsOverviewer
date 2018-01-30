@@ -1,3 +1,5 @@
 rootProject.name = 'LocationsOverviewer'
+include ':react-native-data-fetcher'
+project(':react-native-data-fetcher').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-data-fetcher/android')
 
 include ':app'
