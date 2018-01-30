@@ -4,7 +4,7 @@ import RNDataFetcher from 'react-native-data-fetcher';
 
 const URL = 'http://bit.ly/test-locations';
 
-async function fetch(dispatch) {
+async function fetchLocation(dispatch) {
   dispatch(createAction(ActionTypes.LOCATIONS_LOAD_REQUEST)());
   try {
     var result = await RNDataFetcher.fetch(URL);
@@ -15,9 +15,20 @@ async function fetch(dispatch) {
 }
 
 const loadLocations = () => (dispatch) => {
-  fetch(dispatch);
+  fetchLocation(dispatch);
+};
+
+const updateNote = (location, text) => {
+  return {
+    type: ActionTypes.LOCATIONS_NOTE_UPDATE,
+    payload: {
+      location,
+      text
+    }
+  }
 };
 
 export default {
   loadLocations,
+  updateNote,
 };

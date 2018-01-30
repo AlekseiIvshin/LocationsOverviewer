@@ -4,15 +4,16 @@ import {
   StyleSheet,
   Text,
   View,
-  FlatList
+  FlatList,
+  TouchableOpacity
 } from 'react-native';
-import { connect, Provider } from 'react-redux';
+import { connect } from 'react-redux';
 
 class LocationsListScreen extends Component {
 
   keyExtractor = (item) => {
-    return item._id;
-  }
+    return item.name;
+  };
 
   render() {
     return (
@@ -26,13 +27,18 @@ class LocationsListScreen extends Component {
     );
   }
 
-  renderItem = ({item}) =>{
+  renderItem = ({item}) => {
     return (
-      <View>
+      <TouchableOpacity
+        onPress={() => {
+          this.props.navigation.navigate('Details', {location: item})
+        }}
+        style={styles.item}
+      >
         <Text>{item.name} ({item.lat}x{item.lng})</Text>
-      </View>
+      </TouchableOpacity>
     );
-  }
+  };
 }
 
 const styles = StyleSheet.create({
@@ -41,6 +47,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  item: {
+    padding: 16
   }
 });
 

@@ -27,6 +27,7 @@ const RootNavigator = StackNavigator({
   },
   Details: {
     screen: DetailsScreen,
+    path: 'location/:location',
   },
 });
 
