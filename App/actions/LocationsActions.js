@@ -4,17 +4,18 @@ import RNDataFetcher from 'react-native-data-fetcher';
 
 const URL = 'http://bit.ly/test-locations';
 
-const loadLocations = () => (dispatch) => {
+async function fetch(dispatch) {
   dispatch(createAction(ActionTypes.LOCATIONS_LOAD_REQUEST)());
+  try {
+    var result = await RNDataFetcher.fetch(URL);
+    dispatch(createAction(ActionTypes.LOCATIONS_LOAD_SUCCESS)(result));
+  } catch (error) {
+    dispatch(createAction(ActionTypes.LOCATIONS_LOAD_FAILURE)(error))
+  }
+}
 
-  RNDataFetcher.fetch(URL)
-    .then((data) => {
-      console.log(data);
-      dispatch(createAction(ActionTypes.LOCATIONS_LOAD_SUCCESS)(data));
-    })
-    .catch((error) => {
-      dispatch(createAction(ActionTypes.LOCATIONS_LOAD_FAILURE)(error))
-    })
+const loadLocations = () => (dispatch) => {
+  fetch(dispatch);
 };
 
 export default {

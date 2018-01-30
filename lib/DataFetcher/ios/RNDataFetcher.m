@@ -26,8 +26,7 @@ RCT_EXPORT_METHOD(fetch: (NSString *) url resolver: (RCTPromiseResolveBlock)reso
             reject(@"data_fetching", @"No 'updated' field", nil);
             return;
         }
-        resolve(@{@"locations": [json objectForKey:@"locations"],
-                  @"updated": [json objectForKey:@"updated"]});
+        resolve(json);
     }];
     [dataTask resume];
 }
