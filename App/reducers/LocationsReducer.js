@@ -21,7 +21,7 @@ function handleLoadLocationsSuccess(state, action) {
   return {
     ...state,
     lastUpdate: action.payload.updated,
-    locations: _.unionBy( action.payload.locations,state.locations, 'name'),
+    locations: _.unionBy(action.payload.locations, state.locations, 'name'),
     isLoading: false
   };
 }
@@ -57,12 +57,22 @@ function handleUpdateNote(state, action) {
   }
 }
 
+function handleAddNewLocation(state, action) {
+  const { coordinates, name } = action.payload;
+
+  return {
+    ...state,
+    locations: [...state.locations, { ...coordinates, name }]
+  }
+}
+
 const reducer = handleActions(
   {
     [ActionTypes.LOCATIONS_LOAD_REQUEST]: handleLoadLocationsRequest,
     [ActionTypes.LOCATIONS_LOAD_SUCCESS]: handleLoadLocationsSuccess,
     [ActionTypes.LOCATIONS_LOAD_FAILURE]: handleLoadLocationsFailure,
     [ActionTypes.LOCATIONS_NOTE_UPDATE]: handleUpdateNote,
+    [ActionTypes.LOCATIONS_ADD_NEW]: handleAddNewLocation,
   },
   initialState
 );

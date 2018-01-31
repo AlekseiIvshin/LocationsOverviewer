@@ -28,7 +28,18 @@ const updateNote = (location, text) => {
   }
 };
 
+const addNewLocation = (coordinates, name) => {
+  return {
+    type: ActionTypes.LOCATIONS_ADD_NEW,
+    payload: {
+      coordinates,
+      name
+    }
+  }
+};
+
 export default {
   loadLocations,
   updateNote,
+  addNewLocation,
 };

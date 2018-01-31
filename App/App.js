@@ -17,6 +17,7 @@ import rootReducer from 'app/reducers/rootReducer';
 import HomeScreen from 'app/screens/home/HomeScreen';
 import LocationsListScreen from 'app/screens/list/LocationsListScreen';
 import DetailsScreen from 'app/screens/details/DetailsScreen';
+import NewLocationScreen from 'app/screens/newLocation/NewLocationScreen';
 
 const RootNavigator = StackNavigator({
   Home: {
@@ -28,6 +29,10 @@ const RootNavigator = StackNavigator({
   Details: {
     screen: DetailsScreen,
     path: 'location/:location',
+  },
+  NewLocation: {
+    screen: NewLocationScreen,
+    path: 'newLocation/:coordinates',
   },
 });
 

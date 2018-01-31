@@ -60,7 +60,7 @@ const mapStateToProps = (state, props) => {
   });
   return {
     location,
-    note
+    note,
   };
 };
 
