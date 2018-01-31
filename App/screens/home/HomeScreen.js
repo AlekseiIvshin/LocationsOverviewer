@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import LocationsActions from 'app/actions/LocationsActions';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 class HomeScreen extends Component {
 
@@ -22,9 +23,20 @@ class HomeScreen extends Component {
   }
 
   render() {
+
+    const initialRegion = {
+      latitude: -33.860178,
+      longitude: 151.212706,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    };
     return (
       <View style={styles.container}>
-        <Text>Home screen</Text>
+        <MapView
+          provider={PROVIDER_GOOGLE}
+          initialRegion={initialRegion}
+          style={styles.maps}
+        />
         <Button
           onPress={()=> this.props.navigation.navigate('LocationsList')}
           title="To list"
@@ -40,6 +52,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  maps: {
+    ...StyleSheet.absoluteFillObject
   }
 });
 
