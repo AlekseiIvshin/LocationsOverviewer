@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Button
-} from 'react-native';
+import { View, Button } from 'react-native';
 import { connect } from 'react-redux';
 import LocationsActions from 'app/actions/LocationsActions';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import MarkerComponent from 'app/screens/home/MarkerComponent';
+import MarkerComponent from 'app/components/Marker/MarkerComponent';
+import styles from 'app/screens/home/HomeScreenStyles';
+import colors from 'app/constants/colors';
+
+/**
+ * Main application screen with map.
+ */
 
 class HomeScreen extends Component {
-
   static propTypes = {
+    navigation: PropTypes.object.isRequired,
     locations: PropTypes.array.isRequired,
     loadLocations: PropTypes.func.isRequired,
   };
@@ -24,7 +24,7 @@ class HomeScreen extends Component {
 
     this.state = {
       tempLocation: null,
-    }
+    };
   }
 
   componentDidMount() {
@@ -48,7 +48,7 @@ class HomeScreen extends Component {
   };
 
   handlePressOnCallout = (location) => {
-    this.props.navigation.navigate('Details', { location })
+    this.props.navigation.navigate('Details', { location });
   };
 
   handleOpenList = () => {
@@ -72,7 +72,6 @@ class HomeScreen extends Component {
         <Button
           onPress={this.handleOpenList}
           title="Open list"
-          styles={styles.openList}
         />
         <MapView
           provider={PROVIDER_GOOGLE}
@@ -93,7 +92,6 @@ class HomeScreen extends Component {
         <Button
           onPress={this.handleAddNew}
           title="Add"
-          styles={styles.openList}
           disabled={!this.state.tempLocation}
         />
       </View>
@@ -109,26 +107,13 @@ class HomeScreen extends Component {
       return (
         <Marker
           coordinate={coordinate}
-          pinColor="green"
-          title={location.name}
+          pinColor={colors.tempMarker}
         />
       );
     }
-    return null
+    return null;
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF',
-  },
-  maps: {
-    flex: 1
-  },
-  openList: {}
-});
-
 
 const mapStateToProps = (state) => {
   return {

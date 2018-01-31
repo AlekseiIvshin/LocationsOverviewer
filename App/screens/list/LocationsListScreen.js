@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity
-} from 'react-native';
+import PropTypes from 'prop-types';
+import { Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import styles from 'app/screens/list/LocationsListScreenStyles';
+import { sortByDistance } from 'app/selectors/ListSelectors';
+
+/**
+ * Screen for list representation of locations.
+ */
 
 class LocationsListScreen extends Component {
+  static propTypes = {
+    navigation: PropTypes.object.isRequired,
+    locations: PropTypes.array.isRequired,
+  };
 
   keyExtractor = (item) => {
     return item.name;
@@ -31,31 +35,19 @@ class LocationsListScreen extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.props.navigation.navigate('Details', {location: item})
+          this.props.navigation.navigate('Details', {location: item});
         }}
         style={styles.item}
       >
-        <Text>{item.name} ({item.lat}x{item.lng})</Text>
+        <Text>{item.name} ({item.lat} x {item.lng})</Text>
       </TouchableOpacity>
     );
   };
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  item: {
-    padding: 16
-  }
-});
-
 const mapStateToProps = (state) => {
   return {
-    locations: state.locations.locations,
+    locations: sortByDistance(state, { lat: -33, lng: 151 })
   };
 };
 

@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Button
-} from 'react-native';
 import { Marker } from 'react-native-maps';
 
+/**
+ * Wrapper component for marker
+ */
 export default class MarkerComponent extends Component {
 
   static propTypes = {
@@ -21,14 +17,14 @@ export default class MarkerComponent extends Component {
   };
 
   render() {
-    const { location } = this.props;
+    const coordinate = {
+      latitude: this.props.location.lat,
+      longitude: this.props.location.lng,
+    };
     return (
       <Marker
-        coordinate={{
-                latitude: location.lat,
-                longitude: location.lng,
-              }}
-        title={location.name}
+        coordinate={coordinate}
+        title={this.props.location.name}
         onCalloutPress={this.handleCalloutPress}
       />
     );

@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput
-} from 'react-native';
+import { View, Button, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import LocationsActions from 'app/actions/LocationsActions';
+import styles from 'app/screens/newLocation/NewLocationScreenStyles';
+
+/**
+ * Screen for adding new location.
+ */
 
 class NewLocationScreen extends Component {
-
   static propTypes = {
     coordinates: PropTypes.object.isRequired,
+    navigation: PropTypes.object.isRequired,
+    locationNames: PropTypes.array.isRequired,
     addNewLocation: PropTypes.func.isRequired,
   };
 
@@ -23,7 +22,7 @@ class NewLocationScreen extends Component {
 
     this.state = {
       name: ''
-    }
+    };
   }
 
   handleAddNew = () => {
@@ -31,9 +30,12 @@ class NewLocationScreen extends Component {
     this.props.navigation.goBack();
   };
 
-  handleNameChanges = (name) => this.setState({ name: name.trim() });
+  handleNameChanges = (name) => {
+    this.setState({ name: name.trim() });
+  };
 
   render() {
+    const isAddingEnabled = !!this.state.name && !this.props.locationNames.includes(this.state.name);
     return (
       <View style={styles.container}>
         <TextInput
@@ -44,25 +46,18 @@ class NewLocationScreen extends Component {
         <Button
           onPress={this.handleAddNew}
           title="Add"
-          styles={styles.openList}
-          disabled={!this.state.name}
+          disabled={!isAddingEnabled}
         />
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF',
-  }
-});
-
 
 const mapStateToProps = (state, props) => {
   return {
     coordinates: props.navigation.state.params.coordinates,
+    locationNames: state.locations.locations.map((location) => location.name)
   };
 };
 

@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  TextInput
-} from 'react-native';
+import { Text, View, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import LocationsActions from 'app/actions/LocationsActions';
 
+import styles from 'app/screens/details/DetailsScreenStyles';
+
+/**
+ * Screen shows detailed location information and provide ability to change location note.
+ */
 class DetailsScreen extends Component {
+  static navigationOptions = ({navigation}) => ({
+    title: navigation.state.params.location.name,
+  });
 
   static propTypes = {
     location: PropTypes.object.isRequired,
@@ -28,15 +30,15 @@ class DetailsScreen extends Component {
   };
 
   render() {
-    const { name, lat, lng } = this.props.location;
+    const { lat, lng } = this.props.location;
     return (
       <View style={styles.container}>
-        <Text>{name}</Text>
-        <Text>({lat}x{lng})</Text>
+        <Text> {lat} x {lng}</Text>
         <TextInput
           onChangeText={this.handleNoteChanges}
           numberOfLines={4}
           multiline={true}
+          placeholder="Enter notes"
           value={this.props.note.text}
         />
       </View>
@@ -44,23 +46,14 @@ class DetailsScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-    backgroundColor: '#F5FCFF',
-  }
-});
-
 const mapStateToProps = (state, props) => {
   const location = props.navigation.state.params.location;
-  const note = _.find(state.locations.notes, (note) => {
+  const locationNote = _.find(state.locations.notes, (note) => {
     return note.byName === location.name;
   });
   return {
     location,
-    note,
+    note: locationNote,
   };
 };
 

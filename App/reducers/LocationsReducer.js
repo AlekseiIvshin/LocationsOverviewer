@@ -9,11 +9,10 @@ const initialState = {
   notes: []
 };
 
-function handleLoadLocationsRequest(state, action) {
+function handleLoadLocationsRequest(state) {
   return {
     ...state,
     isLoading: true,
-    locations: []
   };
 }
 
@@ -26,7 +25,7 @@ function handleLoadLocationsSuccess(state, action) {
   };
 }
 
-function handleLoadLocationsFailure(state, action) {
+function handleLoadLocationsFailure(state) {
   return {
     ...state,
     isLoading: false
@@ -54,7 +53,7 @@ function handleUpdateNote(state, action) {
   return {
     ...state,
     notes: newNotes
-  }
+  };
 }
 
 function handleAddNewLocation(state, action) {
@@ -63,7 +62,7 @@ function handleAddNewLocation(state, action) {
   return {
     ...state,
     locations: [...state.locations, { ...coordinates, name }]
-  }
+  };
 }
 
 const reducer = handleActions(

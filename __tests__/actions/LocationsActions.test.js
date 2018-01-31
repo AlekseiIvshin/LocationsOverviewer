@@ -31,7 +31,7 @@ describe('Locations actions', () => {
     mockFetch.mockReturnValue(payload);
 
     // when
-     await store.dispatch(actions.loadLocations());
+    await store.dispatch(actions.loadLocations());
 
     // then
     expect(mockFetch).toBeCalledWith('http://bit.ly/test-locations');
@@ -41,6 +41,24 @@ describe('Locations actions', () => {
       type: ActionTypes.LOCATIONS_LOAD_SUCCESS,
       payload
     }])
+  });
+
+  it('should add new location', () => {
+    // given
+    const coordinates = { lat: -50, lng: -50 };
+    const name = "New Location";
+
+    // when
+    const actualActions = actions.addNewLocation(coordinates, name);
+
+    // then
+    expect(actualActions).toEqual({
+      type: ActionTypes.LOCATIONS_ADD_NEW,
+      payload: {
+        coordinates,
+        name
+      }
+    })
   });
 
 });

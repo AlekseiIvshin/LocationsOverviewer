@@ -7,10 +7,10 @@ const URL = 'http://bit.ly/test-locations';
 async function fetchLocation(dispatch) {
   dispatch(createAction(ActionTypes.LOCATIONS_LOAD_REQUEST)());
   try {
-    var result = await RNDataFetcher.fetch(URL);
+    const result = await RNDataFetcher.fetch(URL);
     dispatch(createAction(ActionTypes.LOCATIONS_LOAD_SUCCESS)(result));
   } catch (error) {
-    dispatch(createAction(ActionTypes.LOCATIONS_LOAD_FAILURE)(error))
+    dispatch(createAction(ActionTypes.LOCATIONS_LOAD_FAILURE)(error));
   }
 }
 
@@ -25,7 +25,7 @@ const updateNote = (location, text) => {
       location,
       text
     }
-  }
+  };
 };
 
 const addNewLocation = (coordinates, name) => {
@@ -35,7 +35,7 @@ const addNewLocation = (coordinates, name) => {
       coordinates,
       name
     }
-  }
+  };
 };
 
 export default {

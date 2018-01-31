@@ -24,7 +24,7 @@ describe('Locations reducer', () => {
     expect(actualStore.isLoading).toBe(false);
   });
 
-  test('should clean current locations and indicate loading', () => {
+  test('should not clean current locations and indicate loading', () => {
     // Given
     const action = {
       type: ActionTypes.LOCATIONS_LOAD_REQUEST
@@ -46,7 +46,7 @@ describe('Locations reducer', () => {
     const actualStore = reducer(initialStore, action);
 
     // Then
-    expect(actualStore.locations).toEqual([]);
+    expect(actualStore.locations).toEqual(initialStore.locations);
     expect(actualStore.notes).toEqual(initialStore.notes);
     expect(actualStore.isLoading).toBe(true);
   });
@@ -117,7 +117,8 @@ describe('Locations reducer', () => {
     const actualStore = reducer(initialState, action);
 
     // Then
-    expect(actualStore.locations).toEqual([action.payload.locations[0],initialState.locations[0]]);
+    expect(actualStore.locations).toContainEqual(action.payload.locations[0]);
+    expect(actualStore.locations).toContainEqual(initialState.locations[0]);
     expect(actualStore.notes).toEqual(TEST_INITIAL_STATE.notes);
     expect(actualStore.isLoading).toBe(false);
   });
@@ -147,7 +148,40 @@ describe('Locations reducer', () => {
     const actualStore = reducer(initialState, action);
 
     // Then
-    expect(actualStore.locations).toEqual([action.payload.locations[0]]);
+    expect(actualStore.locations).toContainEqual(action.payload.locations[0]);
+    expect(actualStore.notes).toEqual(TEST_INITIAL_STATE.notes);
+    expect(actualStore.isLoading).toBe(false);
+  });
+
+  test('should add new location', () => {
+    // Given
+    const name = 'New location';
+    const coordinates = {
+      lat: 50,
+      lng: 50
+    };
+    const action = {
+      type: ActionTypes.LOCATIONS_ADD_NEW,
+      payload: {
+        name,
+        coordinates
+      }
+    };
+
+    // When
+    var initialState = {
+      ...TEST_INITIAL_STATE,
+      locations: [{
+        name: 'Existed location',
+        lat: -50,
+        lng: -50
+      }]
+    };
+    const actualStore = reducer(initialState, action);
+
+    // Then
+    expect(actualStore.locations).toContainEqual({ name, ...coordinates });
+    expect(actualStore.locations).toContainEqual(initialState.locations[0]);
     expect(actualStore.notes).toEqual(TEST_INITIAL_STATE.notes);
     expect(actualStore.isLoading).toBe(false);
   });

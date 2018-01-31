@@ -1,49 +1,24 @@
 import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
 
-import { createStore, applyMiddleware } from 'redux';
-import { connect, Provider } from 'react-redux';
-import thunkMiddleware from 'redux-thunk';
+import ActivityIndicatorComponent from 'app/components/ActivityIndicator/ActivityIndicatorComponent';
 
-import { StackNavigator, addNavigationHelpers } from 'react-navigation';
+import { Provider } from 'react-redux';
 
-import rootReducer from 'app/reducers/rootReducer';
+import RootNavigation from 'app/RootNavigation';
 
-import HomeScreen from 'app/screens/home/HomeScreen';
-import LocationsListScreen from 'app/screens/list/LocationsListScreen';
-import DetailsScreen from 'app/screens/details/DetailsScreen';
-import NewLocationScreen from 'app/screens/newLocation/NewLocationScreen';
+import { PersistGate } from 'redux-persist/lib/integration/react';
+import configureStore from 'app/configureStore';
 
-const RootNavigator = StackNavigator({
-  Home: {
-    screen: HomeScreen,
-  },
-  LocationsList: {
-    screen: LocationsListScreen,
-  },
-  Details: {
-    screen: DetailsScreen,
-    path: 'location/:location',
-  },
-  NewLocation: {
-    screen: NewLocationScreen,
-    path: 'newLocation/:coordinates',
-  },
-});
-
-const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+let { store, persistor } = configureStore();
 
 export default class App extends Component {
 
   render() {
     return (
       <Provider store={store}>
-        <RootNavigator/>
+        <PersistGate loading={<ActivityIndicatorComponent/>} persistor={persistor}>
+          <RootNavigation/>
+        </PersistGate>
       </Provider>
     );
   }
